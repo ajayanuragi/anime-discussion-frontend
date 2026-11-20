@@ -4,6 +4,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import GuestRoute from "@/components/GuestRoute";
 import DashboardPage from "@/pages/DashboardPage";
 import AppLayout from "@/layouts/AppLayout";
+import PostsPage from "@/pages/PostsPage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/posts" element={<PostsPage />} />
           </Route>
         </Route>
       </Routes>
