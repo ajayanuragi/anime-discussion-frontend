@@ -6,7 +6,7 @@ export default function AppLayout() {
     <div className="min-h-screen">
       <header className="flex items-center justify-between border-b px-6 py-4">
         <h1 className="text-xl font-semibold"> Anime Discussion</h1>
-        <nav>
+        <nav className="flex items-center gap-2">
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
@@ -16,6 +16,16 @@ export default function AppLayout() {
             }
           >
             Dashboard
+          </NavLink>
+          <NavLink
+            to="/posts"
+            className={({ isActive }) =>
+              isActive
+                ? "rounded-md bg-primary px-3 py-2 font-medium text-primary-foreground"
+                : "rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+            }
+          >
+            Posts
           </NavLink>
         </nav>
         <LogoutButton />
