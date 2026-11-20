@@ -11,3 +11,7 @@ export const getPosts = async (): Promise<Post[]> => {
   const response = await api.get<Post[]>("/api/posts");
   return response.data;
 };
+
+export const likePost = async (postId: number): Promise<void> => {
+  await api.post(`/api/likes/post/${postId}`);
+};
