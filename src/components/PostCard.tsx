@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { likePost } from "@/services/posts";
 import { Heart } from "lucide-react";
+import PostComments from "@/components/PostComments";
+import CreateCommentForm from "@/components/CreateCommentForm";
 
 interface PostCardProps {
   post: Post;
@@ -54,10 +56,8 @@ export default function PostCard({ post }: PostCardProps) {
       <CardHeader>
         <CardTitle>{post.title}</CardTitle>
       </CardHeader>
-
       <CardContent className="space-y-3">
         <p className="text-sm text-muted-foreground">{post.content}</p>
-
         <Button
           variant="ghost"
           size="sm"
@@ -69,13 +69,14 @@ export default function PostCard({ post }: PostCardProps) {
         >
           <Heart
             className={`size-4 ${
-              post.likedByCurrentUser
-                ? "fill-primary text-primary"
-                : ""
+              post.likedByCurrentUser ? "fill-primary text-primary" : ""
             }`}
           />
           {post.likeCount} likes
         </Button>
+
+        <CreateCommentForm postId={post.id} />
+        <PostComments postId={post.id} />
         {likeMutation.isError && (
           <p role="alert" className="text-sm text-destructive">
             Failed to like post. Please try again.
