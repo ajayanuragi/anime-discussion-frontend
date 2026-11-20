@@ -4,4 +4,5 @@ export interface Post {
   content: string;
   userId: number;
   likeCount: number;
+  likedByCurrentUser: boolean;
 }
