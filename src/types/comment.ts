@@ -5,4 +5,5 @@ export interface Comment {
   post: number;
   likeCount: number;
   username: string;
+  likedByCurrentUser: boolean;
 }
