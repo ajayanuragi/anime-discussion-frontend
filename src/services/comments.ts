@@ -29,3 +29,19 @@ export const likeComment = async (commentId: number): Promise<number> => {
 
   return response.data;
 };
+
+export const createReply = async (
+  parentId: number,
+  content: string,
+  postId: number,
+): Promise<number> => {
+  const response = await api.post<number>(
+    `/api/comments?parentId=${parentId}`,
+    {
+      content,
+      post: postId,
+    },
+  );
+
+  return response.data;
+};

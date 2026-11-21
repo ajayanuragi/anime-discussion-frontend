@@ -1,16 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCommentsByPost } from "@/services/comments";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { likeComment } from "@/services/comments";
 import type { Comment } from "@/types/comment";
+import CommentItem from "@/components/CommentItem";
+import { useState } from "react";
 
 interface PostCommentsProps {
   postId: number;
 }
 
 export default function PostComments({ postId }: PostCommentsProps) {
+  const [replyingToId, setReplyingToId] = useState<number | null>(null);
   const queryClient = useQueryClient();
 
   const likeMutation = useMutation({
@@ -73,29 +74,30 @@ export default function PostComments({ postId }: PostCommentsProps) {
   if (!comments?.length) {
     return <p className="text-sm text-muted-foreground">No comments yet.</p>;
   }
+  const topLevelComments = comments.filter(
+    (comment) => comment.parentId === null,
+  );
 
   return (
     <div className="space-y-3">
-      {comments.map((comment) => (
-        <div key={comment.id} className="space-y-1 rounded-md border p-3">
-          <p className="text-sm font-medium">@{comment.username}</p>
-
-          <p className="text-sm text-muted-foreground">{comment.content}</p>
-          <Button
-            variant="ghost"
-            size="sm"
-            disabled={
-              likeMutation.isPending && likeMutation.variables === comment.id
+      {topLevelComments.map((comment) => (
+        <div key={comment.id} className="rounded-md border p-3">
+          <CommentItem
+            comment={comment}
+            comments={comments}
+            onLike={(commentId) => likeMutation.mutate(commentId)}
+            replyingToId={replyingToId}
+            postId={postId}
+            onReplySuccess={() => setReplyingToId(null)}
+            likingCommentId={
+              likeMutation.isPending ? likeMutation.variables : undefined
             }
-            onClick={() => likeMutation.mutate(comment.id)}
-          >
-            <Heart
-              className={`size-4 ${
-                comment.likedByCurrentUser ? "fill-primary text-primary" : ""
-              }`}
-            />
-            {comment.likeCount}
-          </Button>
+            onReply={(commentId) =>
+              setReplyingToId((current) =>
+                current === commentId ? null : commentId,
+              )
+            }
+          />
         </div>
       ))}
     </div>

@@ -6,4 +6,5 @@ export interface Comment {
   likeCount: number;
   username: string;
   likedByCurrentUser: boolean;
+  parentId: number | null;
 }
